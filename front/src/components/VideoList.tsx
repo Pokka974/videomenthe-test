@@ -1,19 +1,26 @@
-import React from 'react'
+import { useState } from 'react'
 import { ListGroup } from 'react-bootstrap'
+import Video from '../interfaces/Video'
+import VideosProps from '../interfaces/VideosProps'
+function VideoList({videos}: VideosProps) {
 
-function VideoList() {
+  const [currentVideo, setCurentVideo] = useState()
+  
+  const getVideo = async (e: React.MouseEvent<HTMLBaseElement>) => {
+    e.preventDefault()
+    console.log(e.currentTarget.textContent);
+    
+  }
+
   return (
-     <ListGroup className='container-fluid p-5' defaultActiveKey="#link1">
-          <ListGroup.Item action>
-          Link 1
-          </ListGroup.Item>
-          <ListGroup.Item action>
-          Link 2
-          </ListGroup.Item>
-          <ListGroup.Item action >
-          This one is a button
-          </ListGroup.Item>
-   </ListGroup>
+    <ListGroup className='container-fluid p-5' defaultActiveKey="#link1">
+          { videos && videos.map((m : Video) => (
+            <ListGroup.Item onClick={(e : React.MouseEvent<HTMLBaseElement>) => getVideo(e)} key={m.id} action>
+              {m.filename}
+            </ListGroup.Item>
+          )) }
+          {/* VideoPlayer */}
+    </ListGroup>
   )
 }
 

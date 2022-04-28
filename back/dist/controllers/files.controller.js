@@ -15,12 +15,13 @@ const getFiles = async (req, res, nest) => {
             console.error("Could not list the directory", err);
             process.exit(1);
         }
-        files.forEach((file) => {
-            console.log(file);
-            filesNames.push(file);
+        files.forEach((file, index) => {
+            filesNames.push({
+                id: index,
+                filename: file,
+            });
         });
-        console.log(filesNames);
-        res.json(filesNames);
+        res.status(200).json(filesNames);
     });
 };
 exports.getFiles = getFiles;
