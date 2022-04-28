@@ -1,15 +1,19 @@
+import axios from 'axios'
 import { useState } from 'react'
 import { ListGroup } from 'react-bootstrap'
 import Video from '../interfaces/Video'
 import VideosProps from '../interfaces/VideosProps'
+import VideoPlayer from './VideoPlayer'
+// import VideoPlayer from './VideoPlayer'
 function VideoList({videos}: VideosProps) {
 
-  const [currentVideo, setCurentVideo] = useState()
+  const [currentVideo, setCurentVideo] = useState<string | null>(null)
   
   const getVideo = async (e: React.MouseEvent<HTMLBaseElement>) => {
     e.preventDefault()
-    console.log(e.currentTarget.textContent);
+    const selection = e.currentTarget.textContent
     
+      setCurentVideo(selection)
   }
 
   return (
@@ -18,8 +22,11 @@ function VideoList({videos}: VideosProps) {
             <ListGroup.Item onClick={(e : React.MouseEvent<HTMLBaseElement>) => getVideo(e)} key={m.id} action>
               {m.filename}
             </ListGroup.Item>
+            
           )) }
-          {/* VideoPlayer */}
+          { currentVideo && 
+              <VideoPlayer video={currentVideo} />
+          }
     </ListGroup>
   )
 }
