@@ -1,7 +1,8 @@
 import Video from "./Video";
 
 interface VideosProps {
-     videos: Video[]
+     videoList : Video[];
+     updateVideoList : (videos : Video[]) => void;
 }
 
 export default VideosProps

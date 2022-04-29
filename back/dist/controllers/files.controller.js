@@ -7,10 +7,10 @@ exports.getOneFile = exports.getFiles = void 0;
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const rootDir = path_1.default.dirname(require.main.path);
-const uploadsDir = `${rootDir}/uploads/`;
+const filesDir = `${rootDir}/files/`;
 const getFiles = async (req, res, nest) => {
     const filesNames = [];
-    fs_1.default.readdir(uploadsDir, (err, files) => {
+    fs_1.default.readdir(filesDir, (err, files) => {
         if (err) {
             console.error("Could not list the directory", err);
             process.exit(1);
@@ -25,26 +25,27 @@ const getFiles = async (req, res, nest) => {
     });
 };
 exports.getFiles = getFiles;
+// This route is called when a video is played
 const getOneFile = async (req, res, nest) => {
     const filename = req.params.name;
-    const videoPath = `${uploadsDir}${filename}`;
+    const range = req.headers.range;
+    if (!range) {
+        res.status(400).send("Requires Range header");
+    }
+    const videoPath = `${filesDir}${filename}`;
+    const videoSize = fs_1.default.statSync(videoPath).size;
+    const CHUNK_SIZE = 10 ** 6;
+    const start = Number(range === null || range === void 0 ? void 0 : range.replace(/\D/g, ""));
+    const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+    const contentLength = end - start + 1;
     const headers = {
+        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
         "Accept-Ranges": "bytes",
+        "Content-Length": contentLength,
         "Content-Type": "video/mp4",
     };
     res.writeHead(206, headers);
-    const videoStream = fs_1.default.createReadStream(videoPath);
+    const videoStream = fs_1.default.createReadStream(videoPath, { start, end });
     videoStream.pipe(res);
-    // await fs.readdir(uploadsDir, (err, files: string[]) => {
-    //      if (err) {
-    //           console.error("Could not list the directory", err)
-    //           process.exit(1)
-    //      }
-    //      files.forEach((file) => {
-    //           if (file === filename) {
-    //                res.sendFile(`${uploadsDir}${file}`)
-    //           }    
-    //      })
-    // })
 };
 exports.getOneFile = getOneFile;

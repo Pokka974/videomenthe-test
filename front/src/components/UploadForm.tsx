@@ -2,7 +2,9 @@ import axios from 'axios'
 import React, { Component } from 'react'
 import { Button, Toast } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
-export default class UploadForm extends Component<{refresh: any}, {file: File, successToast: boolean}> {
+import Video from '../interfaces/Video'
+
+export default class UploadForm extends Component<{videoList: Video[], updateVideoList: (videos: Video[]) => void}, {file: File, successToast: boolean}> {
 
      constructor(props: any) {
           super(props)
@@ -27,7 +29,14 @@ export default class UploadForm extends Component<{refresh: any}, {file: File, s
           const success = await axios.post('http://localhost:8000/upload/', video)
           if (success) {
                this.setState((state) => ({ successToast : true }))
-               this.props.refresh()
+               let newVideo : Video = {
+                    id : this.props.videoList.length,
+                    filename : success.data.filename
+               }
+
+               let tmpVideoList : Video[] = this.props.videoList
+               tmpVideoList.push(newVideo)
+               this.props.updateVideoList(tmpVideoList)
           }
           this.setState((state) => ({ file: {} as File}))
      }

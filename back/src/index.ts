@@ -9,7 +9,7 @@ const port = process.env.PORT || 8000
 
 app.use(express.json())
 app.use(cors())
-app.use(express.static('uploads'))
+// app.use(express.static('files'))
 
 app.use('/upload', uploadRoute)
 app.use('/files', filesRoute)

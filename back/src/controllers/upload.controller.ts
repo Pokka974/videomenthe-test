@@ -13,12 +13,12 @@ export const createFile = async(req: Request, res: Response) => {
      .setFfmpegPath(pathToFfmpeg)
      .setFfprobePath(ffprobe.path)
      .videoCodec('libx264')
-     .output(`uploads/${req.file!.filename}`)
+     .output(`files/${req.file!.filename}`)
      .size('320x?')
      .on('end', () => {
           fs.unlink(`tmp/${req.file!.filename}`, () => {
                console.log('Video successfully resized');
-               return res.status(200).json({message: 'video resized'})
+               return res.status(200).json({filename: req.file!.filename})
           })
      })
      .on('error', (err) => {

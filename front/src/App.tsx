@@ -2,29 +2,23 @@ import UploadForm from './components/UploadForm';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import VideoList from './components/VideoList';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import Video from './interfaces/Video';
 
 function App() {
 
   const [allVideos, setAllVideos] = useState<Video[]>([])
   
-  useEffect(()  => {
-    refreshList()
-  }, [])
+  useEffect(() => {
+    console.log('Video list: ',allVideos);
+  }, [allVideos])
 
-  const refreshList = () => {
-    const fetchData = async () => {
-      const res = await axios.get('http://localhost:8000/files/')
-      setAllVideos(res.data)
-    }
-    fetchData()
+  const updateVideosState = async (newList : Video[]) => {
+    await setAllVideos(newList)
   }
-
   return (
     <main className='container-fluid d-flex flex-column align-items-center justify-content-center'>
-      <UploadForm refresh={() => refreshList()} />
-      <VideoList videos={allVideos} />
+      <UploadForm videoList = {allVideos} updateVideoList = {updateVideosState}/>
+      <VideoList videoList = {allVideos} updateVideoList = {updateVideosState} />
       
     </main>
   );
