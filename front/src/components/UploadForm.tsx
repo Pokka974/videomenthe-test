@@ -56,20 +56,20 @@ export default class UploadForm extends Component<{videoList: Video[], updateVid
                               <Toast.Body>Success !</Toast.Body>
                          </Toast>
                     )}
-                    <Form.Group controlId="formFileLg" className="mb-3 flex">
+                    <Form.Group controlId="formFileLg" className="mb-3 d-flex flex-column justify-content-center align-items-center gap-4">
                          <Form.Label>Selectionnez le ou les fichiers à compresser:</Form.Label>
                          <Form.Control onChange={ (e: React.ChangeEvent<HTMLInputElement>)  => {
                               if(!e.currentTarget.files) { return }
                               
                               const file = e.currentTarget.files[0]
-                              if (file.type.includes('video')) {
+                              if (file.type.includes('mp4') || file.type.includes('ogg') || file.type.includes('webm')) {
                                    this.updateFile(file)
                               } else {
-                                   window.alert('Seulement les fichiers vidéos sont acceptés')
+                                   window.alert('Seulement les fichiers vidéos (mp4, ogg et webm) sont acceptés')
                                    e.target.value = ''
                               }
-                         } } className='mb-2' type="file" size="lg" name='video' multiple/>
-                         <Button onClick={this.sendVideo} className='btn-success' type="submit">Envoyer</Button>
+                         } } className='mb-2' type="file" size="lg" name='video'/>
+                         <Button onClick={this.sendVideo} className='btn-success w-50' type="submit">Envoyer</Button>
                     </Form.Group>
                </div>
                

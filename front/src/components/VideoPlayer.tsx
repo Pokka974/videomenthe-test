@@ -1,11 +1,9 @@
-import { LegacyRef, MutableRefObject, ReactEventHandler, useEffect, useRef, useState } from 'react'
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import { Ratio } from 'react-bootstrap'
 import {FaPlay} from 'react-icons/fa'
 import {FaPause} from 'react-icons/fa'
 function VideoPlayer({video} : any) {
      const videoRef = useRef() as MutableRefObject<HTMLVideoElement>
-     const inputRef = useRef() as MutableRefObject<HTMLInputElement>
-     const progressRef = useRef() as MutableRefObject<HTMLProgressElement>
 
      const [isPlaying, setIsPlaying] = useState<boolean>(true)
      const [duration, setDuration] = useState<number>(0)
@@ -14,7 +12,14 @@ function VideoPlayer({video} : any) {
      const pathToVideo : string = `http://localhost:8000/files/${video}`
      
      useEffect(() => {
-          setDuration(videoRef.current.duration)
+          
+          videoRef.current.onloadedmetadata = () => {
+               setDuration(videoRef.current.duration)
+          }
+          videoRef.current.addEventListener('timeupdate', () => {
+               setCurrentTime(videoRef.current.currentTime)
+          })
+          
      }, [])
      const playPause = () => {
 
@@ -28,26 +33,24 @@ function VideoPlayer({video} : any) {
           }
      }
 
-     const updateProgressBar = () => {
-          inputRef.current.value = videoRef.current.currentTime.toString()
-          progressRef.current.value = videoRef.current.currentTime
-          setCurrentTime(videoRef.current.currentTime)
+     const dragInput = (e : React.ChangeEvent<HTMLInputElement>) => {
+          setCurrentTime(parseInt(e.target.value))
+          videoRef.current.currentTime = parseInt(e.target.value)
      }
 
      return (
           <>
                <Ratio aspectRatio='16x9' className='w-50 my-3 '>
-                    <video onTimeUpdate={() => updateProgressBar} onClick={playPause} ref={videoRef} playsInline autoPlay>
+                    <video onClick={playPause} ref={videoRef} playsInline autoPlay>
                          <source  src={pathToVideo} type="video/mp4" />
                     </video>
                </Ratio>
-               <button className='btn success' onClick={playPause}>
+               <button className='btn btn-light btn-outline-dark d-flex justify-content-center align-items-center' onClick={playPause}>
                     {!isPlaying ? <FaPlay /> : <FaPause />}
                </button>
-               <div>
-                    {/* <progress ref={progressRef} id="progress-bar" value={curentTime}></progress> */}
-                    <input ref={inputRef} className="seek" id="seek" value={curentTime} max={videoRef.current?.duration || 0} type="range" step="1"/>
-                    <div className="seek-tooltip" id="seek-tooltip">{curentTime}</div>
+               <div className='d-flex flex-column justify-content-center align-items-center gap-2 mt-2 w-50'>
+                    <input onChange={(e) => dragInput(e)} className="form-range" id="seek" value={curentTime || 0} min='0' max={duration} type="range" step='0.001' />
+                    <div className="seek-tooltip" id="seek-tooltip">{curentTime.toFixed(2)} : {duration.toFixed(2)}</div>
                </div>
           </>
      )

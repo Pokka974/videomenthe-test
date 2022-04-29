@@ -9,7 +9,6 @@ function App() {
   const [allVideos, setAllVideos] = useState<Video[]>([])
   
   useEffect(() => {
-    console.log('Video list: ',allVideos);
   }, [allVideos])
 
   const updateVideosState = async (newList : Video[]) => {

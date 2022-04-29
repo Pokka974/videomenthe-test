@@ -1,4 +1,4 @@
-import { Request, Express } from 'express';
+import { Request } from 'express';
 import multer from 'multer'
 
 type DestinationCallback = (error: Error | null, destination: string) => void
