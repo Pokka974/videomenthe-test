@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import path from 'path'
 import fs from 'fs'
+
 const rootDir = path.dirname(require.main!.path)
 const filesDir = `${rootDir}/files/`
-export const getFiles = async (req: Request, res: Response, nest: NextFunction) => {
+export const getFiles = async (_: Request, res: Response, __: NextFunction) => {
      
      const filesNames : object[] = []
      fs.readdir(filesDir, (err, files: string[]) => {
@@ -24,7 +25,7 @@ export const getFiles = async (req: Request, res: Response, nest: NextFunction) 
 }
 
 // This route is called when a video is played
-export const getOneFile = async (req: Request, res: Response, nest: NextFunction) => {
+export const getOneFile = async (req: Request, res: Response, _: NextFunction) => {
      
      const filename : string = req.params.name
      const range = req.headers.range;

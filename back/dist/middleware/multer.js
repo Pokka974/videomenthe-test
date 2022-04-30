@@ -8,13 +8,13 @@ const storage = multer_1.default.diskStorage({
     destination: (_, __, callback) => {
         callback(null, 'tmp/');
     },
-    filename: (_, file, callback) => {
+    filename: (req, file, callback) => {
         const name = file.originalname.split(' ').join('_').split('.');
         name.pop();
         console.log(name);
         const extension = file.mimetype.split('/')[1];
         if (extension)
-            callback(null, name[0] + Date.now() + '.' + extension);
+            callback(null, req.params.resolution + 'p_' + name[0] + Date.now() + '.' + extension);
     }
 });
 const upload = (0, multer_1.default)({ storage }).single('video');

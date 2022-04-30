@@ -8,7 +8,7 @@ const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const rootDir = path_1.default.dirname(require.main.path);
 const filesDir = `${rootDir}/files/`;
-const getFiles = async (req, res, nest) => {
+const getFiles = async (_, res, __) => {
     const filesNames = [];
     fs_1.default.readdir(filesDir, (err, files) => {
         if (err) {
@@ -26,7 +26,7 @@ const getFiles = async (req, res, nest) => {
 };
 exports.getFiles = getFiles;
 // This route is called when a video is played
-const getOneFile = async (req, res, nest) => {
+const getOneFile = async (req, res, _) => {
     const filename = req.params.name;
     const range = req.headers.range;
     if (!range) {

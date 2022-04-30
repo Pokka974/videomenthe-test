@@ -11,7 +11,7 @@ const app = (0, express_1.default)();
 const port = process.env.PORT || 8000;
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-// app.use(express.static('files'))
+app.use(express_1.default.static('tmp'));
 app.use('/upload', upload_route_1.default);
 app.use('/files', files_route_1.default);
 // app.use("*", (req, res) => {

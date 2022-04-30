@@ -1,24 +1,21 @@
 import UploadForm from './components/UploadForm';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import VideoList from './components/VideoList';
-import { useEffect, useState } from 'react';
-import Video from './interfaces/Video';
+import { useState } from 'react';
+import IVideo from './interfaces/IVideo';
 
 function App() {
 
-  const [allVideos, setAllVideos] = useState<Video[]>([])
-  
-  useEffect(() => {
-  }, [allVideos])
+  const [allVideos, setAllVideos] = useState<IVideo[]>([])
 
-  const updateVideosState = async (newList : Video[]) => {
-    await setAllVideos(newList)
+  const updateVideosState = (newList : IVideo[]) => {
+     setAllVideos(newList)
   }
+
   return (
     <main className='container-fluid d-flex flex-column align-items-center justify-content-center'>
       <UploadForm videoList = {allVideos} updateVideoList = {updateVideosState}/>
       <VideoList videoList = {allVideos} updateVideoList = {updateVideosState} />
-      
     </main>
   );
 }
