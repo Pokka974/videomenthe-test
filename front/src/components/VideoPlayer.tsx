@@ -20,12 +20,12 @@ function VideoPlayer({ video }: IVideoPlayer) {
     // SET THE VIDEO DURATION
     videoRef.current.onloadedmetadata = () => {
       setDuration(videoRef.current.duration);
-    };
 
-    // UPDATE THE CURRENT TIME WHILE PLAYING THE VIDEO
-    videoRef.current.addEventListener("timeupdate", () => {
-      setCurrentTime(videoRef.current.currentTime);
-    });
+      // UPDATE THE CURRENT TIME WHILE PLAYING THE VIDEO
+      videoRef.current.addEventListener("timeupdate", () => {
+        setCurrentTime(videoRef.current.currentTime);
+      });
+    };
   }, []);
 
   // PLAY / PAUSE

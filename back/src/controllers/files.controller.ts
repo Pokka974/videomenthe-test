@@ -20,7 +20,7 @@ export const getFiles = async (_: Request, res: Response, __: NextFunction) => {
                })
           })
 
-          res.status(200).json(filesNames)
+          return res.status(200).json(filesNames)
      })
 }
 

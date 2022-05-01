@@ -1,8 +1,8 @@
 interface IUploadForm {
      file: File;
      successToast: boolean;
-     isLoading: boolean;
      compressionLevel: number;
+     uploadPercentage: number;
 }
 
 export default IUploadForm

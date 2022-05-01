@@ -21,7 +21,7 @@ const getFiles = async (_, res, __) => {
                 filename: file,
             });
         });
-        res.status(200).json(filesNames);
+        return res.status(200).json(filesNames);
     });
 };
 exports.getFiles = getFiles;
