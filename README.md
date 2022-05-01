@@ -14,4 +14,8 @@ npm i
 npm start
 ```
 
-## Add a `.env` file in the front/ folder with a `REACT_APP_API_URL` value ( http://localhost:PORT in local )
+## Add a `.env` file in the front/ folder like such: (example)
+
+```
+REACT_APP_API_URL=http://localhost:8000
+`` 
